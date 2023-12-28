@@ -13,45 +13,46 @@ services:
             WORDPRESS_DB_PASSWORD: $$cap_db_pass
 caproverOneClickApp:
     variables:
-        - description: Database host
+        - description: Datenbankhost
           defaultValue: srv-captain--xxx
           id: $$cap_db_host
-          label: Database Host
+          label: Datenbankhost
         - description: Database name
           defaultValue: wordpress
           id: $$cap_db_name
           label: DB Name
-        - description: Table prefix used by this Wordpress
+        - description: Der Tabellenpräfix, der von diesem WordPress verwendet wird.
           defaultValue: WP_
           id: $$cap_db_prefix
-          label: Table Prefix
+          label: Tabellenpräfix
         - id: $$cap_db_user
-          label: Database user
+          label: Datenbankbenutzer
           defaultValue: wordpressuser
         - id: $$cap_db_pass
-          label: Database password
+          label: Datenbankkennwort
           description: ''
           validRegex: /.{1,}/
           defaultValue: $$cap_gen_random_hex(16)
         - id: $$cap_wp_version
           label: WordPress Version
-          defaultValue: 5.4.0
-          description: Check out their Docker page for the valid tags https://hub.docker.com/r/library/wordpress/tags/
+          defaultValue: php8.3-apache
+          description: Schau dir ihre Docker-Seite für die gültigen Tags an - https://hub.docker.com/r/library/wordpress/tags/
           validRegex: /^([^\s^\/])+$/
     instructions:
         start: >-
-            WordPress is an online, open source website creation tool written in PHP. But in non-geek speak, it’s probably the easiest and most powerful blogging and website content management system (or CMS) in existence today.
+            WordPress ist ein Online-Tool zur Website-Erstellung, das in PHP geschrieben ist. In einfachen Worten ausgedrückt, ist es wahrscheinlich das einfachste und leistungsstärkste Blogging- und Content-Management-System (CMS), das es heute gibt.
 
-            Enter your WordPress Configuration parameters and click on next. A WordPress container will be created for you. The process will take about a minute for the process to finish. 
+            Gib deine WordPress-Konfigurationsparameter ein und klicke auf "Weiter". Ein WordPress-Container wird für dich erstellt. Der Prozess dauert etwa eine Minute, bis er abgeschlossen ist.
 
-            Note: This app is intended for advanced users who'd like to have a central DB in a single container for multiple WP's. You should start by configuring your DB first and then comeback with all the DB Information.
+            Hinweis: Diese App richtet sich an fortgeschrittene Benutzer, die eine zentrale Datenbank in einem einzigen Container für mehrere WordPress-Installationen haben möchten. Du solltest damit beginnen, deine Datenbank zu konfigurieren, und dann mit allen Informationen zur Datenbank zurückkehren.
         end: >-
-            Wordpress is deployed and available as $$cap_appname-wordpress . 
+            WordPress wurde bereitgestellt und ist als $$cap_appname-wordpress verfügbar.
 
-            IMPORTANT: It will take up to 2 minutes for WordPress to be ready. Before that, you might see a 502 error page.
+            
+            WICHTIG: Es kann bis zu 2 Minuten dauern, bis WordPress bereit ist. Vorher könnte eine 502 Fehlerseite angezeigt werden.
 
-            Remember that this app will not create a Database by itself. You need to provide all that information.
-    displayName: WordPress - No Database
+            Denke daran, dass diese App keine Datenbank von selbst erstellen wird. Du musst alle diese Informationen bereitstellen.
+    displayName: WordPress - Keine Datenbank
     isOfficial: true
-    description: This will create a WordPress only. You will need to create and configure the database information manually. Intended for advanced users.
+    description: Dies wird nur ein WordPress erstellen. Du musst die Datenbankinformationen manuell erstellen und konfigurieren. Dies ist für fortgeschrittene Benutzer gedacht.
     documentation: Taken from https://docs.docker.com/compose/wordpress/. Port mapping removed from WP as it is no longer needed
