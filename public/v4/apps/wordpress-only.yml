@@ -48,7 +48,7 @@ caproverOneClickApp:
         end: >-
             WordPress wurde bereitgestellt und ist als $$cap_appname-wordpress verfügbar.
 
-            
+
             WICHTIG: Es kann bis zu 2 Minuten dauern, bis WordPress bereit ist. Vorher könnte eine 502 Fehlerseite angezeigt werden.
 
             Denke daran, dass diese App keine Datenbank von selbst erstellen wird. Du musst alle diese Informationen bereitstellen.
