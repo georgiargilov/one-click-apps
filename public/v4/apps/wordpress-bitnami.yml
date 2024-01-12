@@ -1,0 +1,122 @@
+captainVersion: 4
+services:
+    $$cap_appname-db:
+        image: bitnami/mysql:$$cap_database_version
+        volumes:
+            - $$cap_appname-db-data:/bitnami/mysql
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: $$cap_db_root_pass
+            MYSQL_DATABASE: $$cap_db_name
+            MYSQL_USER: $$cap_db_user
+            MYSQL_PASSWORD: $$cap_db_pass
+
+        caproverExtra:
+            notExposeAsWebApp: 'true'
+    $$cap_appname-wordpress:
+        depends_on:
+            - $$cap_appname-db
+        image: bitnami/wordpress:$$cap_wp_version
+        volumes:
+            - $$cap_appname-data:/bitnami/wordpress
+        restart: always
+        environment:
+            WORDPRESS_DATABASE_HOST: srv-captain--$$cap_appname-db
+            WORDPRESS_DATABASE_USER: $$cap_db_user
+            WORDPRESS_DATABASE_NAME: $$cap_db_name
+            WORDPRESS_DATABASE_PASSWORD: $$cap_db_pass
+            WORDPRESS_TABLE_PREFIX: $$cap_db_prefix
+            WORDPRESS_ENABLE_HTTPS: $$cap_enable_https
+            WORDPRESS_USERNAME: $$cap_username
+            WORDPRESS_PASSWORD: $$cap_password
+            WORDPRESS_EMAIL: $$cap_email
+            WORDPRESS_BLOG_NAME: $$cap_blog_name
+            WORDPRESS_AUTO_UPDATE_LEVEL: $$cap_auto_update_level
+            PHP_MEMORY_LIMIT: $$cap_php_memory_limit
+            PHP_POST_MAX_SIZE: $$cap_php_post_max_size
+            PHP_UPLOAD_MAX_FILESIZE: $$cap_php_upload_max_filesize
+        caproverExtra:
+            containerHttpPort: '8080'
+caproverOneClickApp:
+    variables:
+        - id: $$cap_db_user
+          label: Datenbankbenutzer
+          defaultValue: agindowp
+          validRegex: /^([a-zA-Z0-9])+$/
+        - description: Datenbankname
+          defaultValue: agindo_wp
+          id: $$cap_db_name
+          label: Datenbankname
+        - id: $$cap_db_pass
+          label: Datenbankkennwort
+          description: ''
+          validRegex: /^(\w|[^\s"'\\])+$/
+          defaultValue: $$cap_gen_random_hex(16)
+        - id: $$cap_db_root_pass
+          label: Root Datenbankkennwort
+          description: ''
+          validRegex: /^(\w|[^\s"'\\])+$/
+          defaultValue: $$cap_gen_random_hex(16)
+        - description: Tabellenpräfix
+          defaultValue: agwoprs_
+          id: $$cap_db_prefix
+          label: Tabellenpräfix
+        - id: $$cap_wp_version
+          label: WordPress Version
+          defaultValue: 'latest'
+          description: Check out their Docker page for the valid tags https://hub.docker.com/r/library/wordpress/tags/
+          validRegex: /^([^\s^\/])+$/
+        - id: $$cap_database_version
+          label: Datenbankversion, Standard ist 'latest''
+          defaultValue: 'latest'
+          description: Schau dir ihre Docker-Seite für die gültigen Tags an - https://hub.docker.com/r/bitnami/mysql/tags
+          validRegex: /^([^\s^\/])+$/
+        - description: Ob standardmäßig HTTPS verwendet werden soll
+          defaultValue: 'yes'
+          id: $$cap_enable_https
+          label: HTTPS standardmäßig
+        - description: WP-Admin Benutzername
+          defaultValue: 'verwalter'
+          id: $$cap_username
+          label: WP-Admin Benutzername
+        - description: WP-Admin Password
+          defaultValue: 'agindo281358!'
+          id: $$cap_password
+          label: WP-Admin Password
+        - description: WP-Admin E-Mail
+          defaultValue: 'caprover@agindo.eu'
+          id: $$cap_email
+          label: WP-Admin E-Mail
+        - description: Titel der Seite
+          defaultValue: 'Agindo Wordpress Caprover'
+          id: $$cap_blog_name
+          label: Titel der Seite
+        - description: 'Gültige Werte: major, minor, none.'
+          defaultValue: 'minor'
+          id: $$cap_auto_update_level
+          label: Stufe der automatischen Aktualisierungen, die für die WordPress-Kerninstallation zulässig sind.
+        - description: PHP Memory Limit
+          defaultValue: '256M'
+          id: $$cap_php_memory_limit
+          label: PHP Memory Limit
+        - description: PHP Post Max Size
+          defaultValue: '8M'
+          id: $$cap_php_post_max_size
+          label: PHP Post Max Size
+        - description: PHP Upload Max Filesize
+          defaultValue: '8M'
+          id: $$cap_php_upload_max_filesize
+          label: PHP Upload Max Filesize
+    instructions:
+        start: >-
+            WordPress ist ein Online-Tool zur Website-Erstellung, das in PHP geschrieben ist. In einfachen Worten ausgedrückt, ist es wahrscheinlich das einfachste und leistungsstärkste Blogging- und Content-Management-System (CMS), das es heute gibt.
+
+            Gib deine WordPress-Konfigurationsparameter ein und klicke auf "Weiter". Es wird ein MySQL (Datenbank)- und ein WordPress-Container für dich erstellt. Der Prozess dauert etwa eine Minute, bis er abgeschlossen ist.
+        end: >
+            WordPress wurde bereitgestellt und ist als $$cap_appname-wordpress verfügbar.
+
+            WICHTIG: Es kann bis zu 2 Minuten dauern, bis WordPress bereit ist. Vorher könnte eine 502 Fehlerseite angezeigt werden.
+    displayName: WordPress - Agindo Dev
+    isOfficial: true
+    description: Es handelt sich um eine WordPress-Version, die auf dem Bitnami-Image basiert und eine zeitsparende Installation für die Entwickler der Agindo ermöglicht.
+    documentation: Für mehr Information oder mögliche Variablen- https://hub.docker.com/r/bitnami/wordpress

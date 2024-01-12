@@ -22,12 +22,12 @@ caproverOneClickApp:
           id: $$cap_db_name
           label: DB Name
         - description: Der Tabellenpräfix, der von diesem WordPress verwendet wird.
-          defaultValue: WP_
+          defaultValue: agwopr_
           id: $$cap_db_prefix
           label: Tabellenpräfix
         - id: $$cap_db_user
           label: Datenbankbenutzer
-          defaultValue: wordpressuser
+          defaultValue: agindo
         - id: $$cap_db_pass
           label: Datenbankkennwort
           description: ''
